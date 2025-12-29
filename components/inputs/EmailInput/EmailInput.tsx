@@ -5,12 +5,13 @@ import { useFormikContext } from "formik";
 import { TextInput, TextInputProps } from "../components/TextInput/TextInput";
 
 export function EmailInput({ ...properties }: TextInputProps) {
-  const { handleChange, handleBlur, errors, touched, setFieldValue } =
+  const { handleChange, handleBlur, errors, touched, setFieldValue, values } =
     useFormikContext<{ email: string }>();
 
   return (
     <TextInput
       type="email"
+      value={values.email}
       onChange={handleChange("email")}
       onBlur={handleBlur("email")}
       isInvalid={touched.email && !!errors.email}
