@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/Button/Button";
+import { Button } from "@/components/buttons/Button/Button";
 import { BACK_TO_HOMEPAGE_BUTTON_LABEL } from "@/constants/buttons";
 import { PAGE_DOES_NOT_EXIST } from "@/constants/errorMessages";
 import { HOME_URL } from "@/constants/urls";

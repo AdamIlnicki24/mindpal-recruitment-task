@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/Button/Button";
+import { Button } from "@/components/buttons/Button/Button";
 import { TRY_AGAIN_BUTTON_LABEL } from "@/constants/buttons";
 import { SOMETHING_WENT_WRONG } from "@/constants/errorMessages";
 import { useEffect } from "react";
