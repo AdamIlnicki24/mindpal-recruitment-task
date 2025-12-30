@@ -1,5 +1,5 @@
-import { HomePageContent } from "./components/HomePageContent/HomePageContent";
+import { LogInContent } from "./(public)/log-in/LogInContent/LogInContent";
 
-export default function HomePage() {
-  return <HomePageContent />;
+export default function LogInPage() {
+  return <LogInContent />;
 }
