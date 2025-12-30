@@ -13,7 +13,9 @@ import { useState } from "react";
 import { LogInFormData, logInFormSchema } from "./logInFormSchema";
 import { EmailInput } from "@/components/inputs/EmailInput/EmailInput";
 import { PasswordInput } from "@/components/inputs/PasswordInput/PasswordInput";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/supabase/supabaseClient";
+import { useRouter, useSearchParams } from "next/navigation";
+import { DASHBOARD_URL } from "@/constants/urls";
 
 interface LogInFormProps {
   initialValues: LogInFormData;
@@ -21,6 +23,8 @@ interface LogInFormProps {
 
 export function LogInForm({ initialValues }: LogInFormProps) {
   const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const onSubmitHandler = async (values: LogInFormData) => {
     setIsPending(true);
@@ -44,7 +48,6 @@ export function LogInForm({ initialValues }: LogInFormProps) {
         });
 
         setIsPending(false);
-
         return;
       }
 
@@ -53,8 +56,14 @@ export function LogInForm({ initialValues }: LogInFormProps) {
         title: LOG_IN_SUCCESS_TOAST,
       });
 
+      const redirectParam = searchParams?.get("redirect") ?? "";
+      const redirectPath = redirectParam
+        ? decodeURIComponent(redirectParam)
+        : DASHBOARD_URL;
+      router.replace(redirectPath);
       setIsPending(false);
     } catch (error) {
+      console.error("Login error:", error);
       addToast({
         color: "danger",
         title: LOG_IN_ERROR_TOAST,
@@ -78,7 +87,7 @@ export function LogInForm({ initialValues }: LogInFormProps) {
           </div>
           <SubmitButton
             title={isPending ? <Spinner size="md" /> : LOG_IN_BUTTON_LABEL}
-            mode="primary"
+            mode="secondary"
           />
         </div>
       )}
