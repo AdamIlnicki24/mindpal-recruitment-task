@@ -67,7 +67,6 @@ export function SignUpForm({ initialValues }: SignUpFormProps) {
 
       setIsPending(false);
     } catch (err) {
-      console.error("Sign up error:", err);
       addToast({
         color: "danger",
         title: SIGN_UP_ERROR_TOAST,

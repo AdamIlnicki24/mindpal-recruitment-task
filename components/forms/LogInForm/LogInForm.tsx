@@ -64,7 +64,6 @@ export function LogInForm({ initialValues }: LogInFormProps) {
       router.replace(redirectPath);
       setIsPending(false);
     } catch (error) {
-      console.error("Login error:", error);
       addToast({
         color: "danger",
         title: LOG_IN_ERROR_TOAST,

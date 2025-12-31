@@ -32,7 +32,7 @@ export function useCharacters(page: number) {
         throw error;
       }
 
-      const json = data as any;
+      const json = data;
 
       return {
         results: json.data?.characters?.results ?? [],
@@ -43,7 +43,7 @@ export function useCharacters(page: number) {
           0,
       };
     },
-    retry: (failureCount, error: any) => {
+    retry: (failureCount, error) => {
       return error?.message !== "User not authenticated" && failureCount < 3;
     },
     enabled: page > 0,

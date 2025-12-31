@@ -22,18 +22,22 @@ export const UserContext = createContext<UserContextProps>({
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  // Pobieramy status auth i raw supabase usera z useAuth (już w projekcie)
   const { isLoggedIn, isPending, user: supabaseUser } = useAuth();
 
   const [user, setUser] = useState<User | null>(null);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    // mapowanie SupabaseUser -> nasz User
     const mapUser = (u: SupabaseUser | null): User | null => {
       if (!u) return null;
-      // Supabase user object może trzymać dane w user_metadata
-      const metadata: any = (u as any).user_metadata ?? {};
+
+      const metadata = u.user_metadata as {
+        fullName?: string;
+        name?: string;
+        avatar_url?: string;
+        avatarUrl?: string;
+      };
+
       return {
         id: u.id,
         email: u.email ?? null,
@@ -44,7 +48,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     try {
       if (isPending) {
-        // początkowy stan - nic nie robimy
         return;
       }
 
@@ -53,11 +56,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      // jeśli jest user od supabase -> ustaw
       setUser(mapUser(supabaseUser ?? null));
       setIsError(false);
     } catch (e) {
-      console.error("UserProvider mapping error:", e);
       setIsError(true);
       setUser(null);
     }
@@ -66,9 +67,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const logOut = async () => {
     try {
       await supabase.auth.signOut();
-    } catch (e) {
-      console.error("Sign out error:", e);
-    }
+    } catch (e) {}
   };
 
   if (isPending) {

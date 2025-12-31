@@ -47,8 +47,7 @@ export function CharactersList() {
     try {
       await addFavorite({ id, name, image });
       addToast({ color: "success", title: "Dodano do ulubionych" });
-    } catch (e: any) {
-      console.error(e);
+    } catch (e) {
       addToast({ color: "danger", title: "Błąd podczas dodawania" });
     }
   };
@@ -58,7 +57,6 @@ export function CharactersList() {
       await removeFavorite(id);
       addToast({ color: "success", title: "Usunięto z ulubionych" });
     } catch (e) {
-      console.error(e);
       addToast({ color: "danger", title: "Błąd podczas usuwania" });
     }
   };

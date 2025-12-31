@@ -32,7 +32,6 @@ export function FavoritesList() {
       await removeFavorite(id);
       addToast({ color: "success", title: "Usunięto z ulubionych" });
     } catch (e) {
-      console.error(e);
       addToast({ color: "danger", title: "Błąd podczas usuwania" });
     }
   };

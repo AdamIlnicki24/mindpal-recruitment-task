@@ -21,7 +21,7 @@ export function useFavorites(page = 1, pageSize = PAGE_SIZE) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const userId = (user as any)?.id ?? null;
+  const userId = user?.id ?? null;
 
   const query = useQuery({
     queryKey: ["favorites", userId, page, pageSize],
@@ -40,7 +40,7 @@ export function useFavorites(page = 1, pageSize = PAGE_SIZE) {
 
       if (error) throw error;
 
-      const items: Favorite[] = (data ?? []).map((r: any) => ({
+      const items: Favorite[] = (data ?? []).map((r) => ({
         id: Number(r.character_id),
         name: r.character_name,
         image: r.character_image,
