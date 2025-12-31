@@ -63,19 +63,19 @@ export function CharactersList() {
 
   return (
     <div className="min-h-svh">
-      <div className="mb-4 grid grid-cols-1 items-center gap-4 pe-8 pb-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="flex justify-start">
+      <div className="mb-4 grid grid-cols-1 items-center gap-4 pe-8 pb-4 lg:grid-cols-3">
+        <div className="flex justify-center lg:justify-start">
           <RedirectButton
             title="Przejdź do Twoich ulubionych postaci"
             onPress={() => router.push(FAVORITES_URL)}
           />
         </div>
-        <div className="order-first flex justify-center sm:order-none sm:col-span-2 lg:col-span-1">
+        <div className="order-first flex justify-center lg:order-none lg:col-span-1">
           <h1 className="text-center text-[1.7rem] font-bold uppercase">
             Lista wszystkich postaci z Rick i Morty
           </h1>
         </div>
-        <div className="flex justify-end sm:col-start-2 sm:justify-self-end lg:col-auto">
+        <div className="flex justify-center lg:justify-end">
           <LogoutButton />
         </div>
       </div>
@@ -88,7 +88,7 @@ export function CharactersList() {
 
       {isError && <div className="text-red-600">Błąd podczas pobierania</div>}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {data?.results?.map((c) => (
           <div
             key={c.id}
@@ -104,7 +104,7 @@ export function CharactersList() {
                   className="rounded object-cover"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded bg-gray-100 text-sm">
+                <div className="flex h-20 w-20 items-center justify-center rounded bg-gray-100 text-lg">
                   Brak zdjęcia
                 </div>
               )}
@@ -112,7 +112,7 @@ export function CharactersList() {
 
             <div className="flex-1">
               <h3 className="font-semibold">{c.name}</h3>
-              <p className="text-sm">
+              <p className="text-lg">
                 {c.species} {c.status ? `• ${c.status}` : ""}
               </p>
             </div>
