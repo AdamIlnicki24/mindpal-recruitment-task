@@ -10,6 +10,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LogOutButton } from "../../buttons/LogOutButton/LogOutButton";
 import { RemoveButton } from "../../buttons/RemoveButton/RemoveButton";
+import {
+  FETCH_ERROR_MESSAGE,
+  NO_FAVORITES_ERROR_MESSAGE,
+  NO_IMAGE_ERROR_MESSAGE,
+} from "@/constants/errorMessages";
+import { FAVORITES_LIST_HEADING } from "@/constants/headings";
+import {
+  REMOVE_FAVORITE_ERROR_TOAST,
+  REMOVE_FAVORITE_TOAST,
+} from "@/constants/toasts";
+import { REDIRECT_TO_ALL_CHARACTERS_BUTTON_LABEL } from "@/constants/buttons";
 
 export function FavoritesList() {
   const router = useRouter();
@@ -30,12 +41,12 @@ export function FavoritesList() {
   const onRemove = async (id: number) => {
     try {
       await removeFavorite(id);
-      addToast({ color: "success", title: "Usunięto z ulubionych" });
+      addToast({ color: "success", title: REMOVE_FAVORITE_TOAST });
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
         console.error(err);
       }
-      addToast({ color: "danger", title: "Błąd podczas usuwania" });
+      addToast({ color: "danger", title: REMOVE_FAVORITE_ERROR_TOAST });
     }
   };
 
@@ -44,13 +55,13 @@ export function FavoritesList() {
       <div className="mb-4 grid grid-cols-1 items-center gap-4 pe-8 pb-4 lg:grid-cols-3">
         <div className="flex justify-center lg:justify-start">
           <RedirectButton
-            title="Przejdź do wszystkich postaci"
+            title={REDIRECT_TO_ALL_CHARACTERS_BUTTON_LABEL}
             onPress={() => router.push(DASHBOARD_URL)}
           />
         </div>
         <div className="order-first flex justify-center lg:order-none lg:col-span-1">
           <h1 className="text-center text-[1.7rem] font-bold uppercase">
-            Twoje ulubione postaci
+            {FAVORITES_LIST_HEADING}
           </h1>
         </div>
         <div className="flex justify-center lg:justify-end">
@@ -64,11 +75,11 @@ export function FavoritesList() {
         </div>
       )}
 
-      {isError && <div className="text-red-600">Błąd podczas pobierania</div>}
+      {isError && <div className="text-red-600"> {FETCH_ERROR_MESSAGE}</div>}
 
       {!isLoading && favorites.length === 0 && (
         <div className="py-10 pe-8 text-center text-lg">
-          Nie masz jeszcze ulubionych postaci.
+          {NO_FAVORITES_ERROR_MESSAGE}
         </div>
       )}
 
@@ -89,7 +100,7 @@ export function FavoritesList() {
                 />
               ) : (
                 <div className="flex h-20 w-20 items-center justify-center rounded bg-gray-100 text-lg">
-                  Brak zdjęcia
+                  {NO_IMAGE_ERROR_MESSAGE}
                 </div>
               )}
             </div>
@@ -114,6 +125,8 @@ export function FavoritesList() {
           currentPage={page}
           totalPages={totalPages}
           onChange={(p) => setPage(p)}
+          siblings={2}
+          boundaries={2}
         />
       </div>
     </div>

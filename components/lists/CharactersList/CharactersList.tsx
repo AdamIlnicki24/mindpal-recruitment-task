@@ -13,6 +13,18 @@ import { useState } from "react";
 import { AddButton } from "../../buttons/AddButton/AddButton";
 import { RemoveButton } from "../../buttons/RemoveButton/RemoveButton";
 import { LogOutButton } from "@/components/buttons/LogOutButton/LogOutButton";
+import {
+  ADD_FAVORITE_TOAST,
+  ADD_FAVORITE_ERROR_TOAST,
+  REMOVE_FAVORITE_ERROR_TOAST,
+  REMOVE_FAVORITE_TOAST,
+} from "@/constants/toasts";
+import { REDIRECT_TO_FAVORITES_BUTTON_LABEL } from "@/constants/buttons";
+import { ALL_CHARACTERS_LIST_HEADING } from "@/constants/headings";
+import {
+  FETCH_ERROR_MESSAGE,
+  NO_IMAGE_ERROR_MESSAGE,
+} from "@/constants/errorMessages";
 
 export function CharactersList() {
   const [page, setPage] = useState<number>(1);
@@ -45,24 +57,24 @@ export function CharactersList() {
     }
     try {
       await addFavorite({ id, name, image });
-      addToast({ color: "success", title: "Dodano do ulubionych" });
+      addToast({ color: "success", title: ADD_FAVORITE_TOAST });
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
         console.error(err);
       }
-      addToast({ color: "danger", title: "Błąd podczas dodawania" });
+      addToast({ color: "danger", title: ADD_FAVORITE_ERROR_TOAST });
     }
   };
 
   const onRemove = async (id: number) => {
     try {
       await removeFavorite(id);
-      addToast({ color: "success", title: "Usunięto z ulubionych" });
+      addToast({ color: "success", title: REMOVE_FAVORITE_TOAST });
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
         console.error(err);
       }
-      addToast({ color: "danger", title: "Błąd podczas usuwania" });
+      addToast({ color: "danger", title: REMOVE_FAVORITE_ERROR_TOAST });
     }
   };
 
@@ -71,13 +83,13 @@ export function CharactersList() {
       <div className="mb-4 grid grid-cols-1 items-center gap-4 pe-8 pb-4 lg:grid-cols-3">
         <div className="flex justify-center lg:justify-start">
           <RedirectButton
-            title="Przejdź do Twoich ulubionych postaci"
+            title={REDIRECT_TO_FAVORITES_BUTTON_LABEL}
             onPress={() => router.push(FAVORITES_URL)}
           />
         </div>
         <div className="order-first flex justify-center lg:order-none lg:col-span-1">
           <h1 className="text-center text-[1.7rem] font-bold uppercase">
-            Lista wszystkich postaci z Rick i Morty
+            {ALL_CHARACTERS_LIST_HEADING}
           </h1>
         </div>
         <div className="flex justify-center lg:justify-end">
@@ -91,7 +103,7 @@ export function CharactersList() {
         </div>
       )}
 
-      {isError && <div className="text-red-600">Błąd podczas pobierania</div>}
+      {isError && <div className="text-red-600">{FETCH_ERROR_MESSAGE}</div>}
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {data?.results?.map((c) => (
@@ -110,7 +122,7 @@ export function CharactersList() {
                 />
               ) : (
                 <div className="flex h-20 w-20 items-center justify-center rounded bg-gray-100 text-lg">
-                  Brak zdjęcia
+                  {NO_IMAGE_ERROR_MESSAGE}
                 </div>
               )}
             </div>
@@ -146,6 +158,8 @@ export function CharactersList() {
           currentPage={page}
           totalPages={totalPages}
           onChange={(p) => setPage(p)}
+          siblings={2}
+          boundaries={2}
         />
       </div>
     </div>

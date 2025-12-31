@@ -9,6 +9,8 @@ interface PaginationProps {
   size?: "sm" | "md" | "lg";
   showControls?: boolean;
   isCompact?: boolean;
+  siblings?: number;
+  boundaries?: number;
 }
 
 export function Pagination({
@@ -18,11 +20,23 @@ export function Pagination({
   size = "md",
   showControls = true,
   isCompact = false,
+  siblings = 2,
+  boundaries = 1,
 }: PaginationProps) {
+  const total = Math.max(1, Math.floor(totalPages));
+
+  const page = Math.min(Math.max(1, Math.floor(currentPage || 1)), total);
+
+  const maxMiddle = total - boundaries * 2 - 1;
+
+  const effectiveSiblings =
+    maxMiddle <= 0 ? 0 : Math.min(siblings, Math.floor(maxMiddle / 2));
+
   return (
     <HeroUIPagination
-      page={currentPage}
-      total={Math.max(1, totalPages)}
+      key={`hp-${page}-${total}-${effectiveSiblings}-${boundaries}`}
+      page={page}
+      total={total}
       size={size}
       showControls={showControls}
       isCompact={isCompact}
@@ -31,9 +45,9 @@ export function Pagination({
         prev: "cursor-pointer",
         next: "cursor-pointer",
       }}
-      onChange={(p: number) => {
-        onChange(p);
-      }}
+      onChange={(p: number) => onChange(p)}
+      siblings={effectiveSiblings}
+      boundaries={Math.min(boundaries, total)}
     />
   );
 }
