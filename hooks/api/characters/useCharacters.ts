@@ -14,7 +14,6 @@ const GET_CHARACTERS_QUERY = `
 `;
 
 export function useCharacters(page: number) {
-
   return useQuery({
     queryKey: ["characters", page],
     queryFn: async (): Promise<{

@@ -1,6 +1,10 @@
 "use client";
 
 import { Button } from "@/components/buttons/Button/Button";
+import {
+  LOGGING_OUT_BUTTON_LABEL,
+  LOG_OUT_BUTTON_LABEL,
+} from "@/constants/buttons";
 import { LOG_OUT_SUCCESS_TOAST } from "@/constants/toasts";
 import { LOG_IN_URL } from "@/constants/urls";
 import { supabase } from "@/supabase/supabaseClient";
@@ -26,7 +30,7 @@ export function LogoutButton() {
 
   return (
     <Button
-      title={loading ? "Wylogowywanie..." : "Wyloguj"}
+      title={loading ? LOGGING_OUT_BUTTON_LABEL : LOG_OUT_BUTTON_LABEL}
       onClick={handleLogout}
       disabled={loading}
       size="sm"

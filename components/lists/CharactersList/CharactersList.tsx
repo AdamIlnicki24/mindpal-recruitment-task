@@ -1,5 +1,6 @@
 "use client";
 
+import { RedirectButton } from "@/components/buttons/RedirectButton/RedirectButton";
 import { Pagination } from "@/components/Pagination/Pagination";
 import { FAVORITES_URL, LOG_IN_URL } from "@/constants/urls";
 import { useCharacters } from "@/hooks/api/characters/useCharacters";
@@ -7,13 +8,11 @@ import { useFavorites } from "@/hooks/api/favorites/useFavorites";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { addToast, Spinner } from "@heroui/react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AddButton } from "../../buttons/AddButton/AddButton";
 import { LogoutButton } from "../../buttons/LogoutButton/LogoutButton";
 import { RemoveButton } from "../../buttons/RemoveButton/RemoveButton";
-import { RedirectButton } from "@/components/buttons/RedirectButton/RedirectButton";
-import { useRouter } from "next/navigation";
 
 export function CharactersList() {
   const [page, setPage] = useState<number>(1);
@@ -39,15 +38,18 @@ export function CharactersList() {
 
   const onAdd = async (id: number, name: string, image?: string | null) => {
     if (!isLoggedIn) {
-      window.location.href = `${LOG_IN_URL}?redirect=${encodeURIComponent(
+      router.push(`${LOG_IN_URL}?redirect=${encodeURIComponent(
         window.location.pathname
-      )}`;
+      )}`);
       return;
     }
     try {
       await addFavorite({ id, name, image });
       addToast({ color: "success", title: "Dodano do ulubionych" });
-    } catch (e) {
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(err);
+      }
       addToast({ color: "danger", title: "Błąd podczas dodawania" });
     }
   };
@@ -56,7 +58,10 @@ export function CharactersList() {
     try {
       await removeFavorite(id);
       addToast({ color: "success", title: "Usunięto z ulubionych" });
-    } catch (e) {
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(err);
+      }
       addToast({ color: "danger", title: "Błąd podczas usuwania" });
     }
   };

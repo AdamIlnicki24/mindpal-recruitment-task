@@ -2,3 +2,7 @@ export const BACK_TO_HOMEPAGE_BUTTON_LABEL = "Wróć do strony głównej";
 export const TRY_AGAIN_BUTTON_LABEL = "Spróbuj ponownie";
 export const LOG_IN_BUTTON_LABEL = "Zaloguj się";
 export const SIGN_UP_BUTTON_LABEL = "Zarejestruj się";
+export const ADD_FAVORITE_BUTTON_LABEL = "Dodaj do ulubionych";
+export const REMOVE_FAVORITE_BUTTON_LABEL = "Usuń z ulubionych";
+export const LOG_OUT_BUTTON_LABEL = "Wyloguj";
+export const LOGGING_OUT_BUTTON_LABEL = "Wylogowywanie...";

@@ -1,4 +1,5 @@
 import { Button, ButtonProps, Spinner } from "@heroui/react";
+import { ADD_FAVORITE_BUTTON_LABEL } from "@/constants/buttons";
 
 interface AddButtonProps extends ButtonProps {
   addingFavorite: boolean;
@@ -7,7 +8,7 @@ interface AddButtonProps extends ButtonProps {
 export function AddButton({ addingFavorite, ...properties }: AddButtonProps) {
   return (
     <Button className="bg-primaryColor font-bold text-white" {...properties}>
-      {addingFavorite ? <Spinner size="sm" /> : "Dodaj do ulubionych"}
+      {addingFavorite ? <Spinner size="sm" /> : ADD_FAVORITE_BUTTON_LABEL}
     </Button>
   );
 }

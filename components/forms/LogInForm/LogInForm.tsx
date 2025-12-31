@@ -63,7 +63,10 @@ export function LogInForm({ initialValues }: LogInFormProps) {
         : DASHBOARD_URL;
       router.replace(redirectPath);
       setIsPending(false);
-    } catch (error) {
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(err);
+      }
       addToast({
         color: "danger",
         title: LOG_IN_ERROR_TOAST,
@@ -87,7 +90,6 @@ export function LogInForm({ initialValues }: LogInFormProps) {
           </div>
           <SubmitButton
             title={isPending ? <Spinner size="md" /> : LOG_IN_BUTTON_LABEL}
-            mode="secondary"
           />
           <div className="mt-4 text-center text-sm text-gray-500">
             Nie masz konta?{" "}

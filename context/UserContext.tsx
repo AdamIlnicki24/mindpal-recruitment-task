@@ -59,6 +59,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
       setUser(mapUser(supabaseUser ?? null));
       setIsError(false);
     } catch (e) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(e);
+      }
       setIsError(true);
       setUser(null);
     }
@@ -67,7 +70,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const logOut = async () => {
     try {
       await supabase.auth.signOut();
-    } catch (e) {}
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(err);
+      }
+    }
   };
 
   if (isPending) {
