@@ -6,6 +6,7 @@
 @theme {
   --color-white: #fff;
   --color-black: #000;
-  --color-primaryColor: #3b1a06;
-  --color-defaultGray: #676767;
+  --color-defaultRed: #861616ff;
+  --color-primaryColor: #1c4464ff;
+  --color-defaultGray: #898989;
 }
