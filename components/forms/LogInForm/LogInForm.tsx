@@ -17,6 +17,7 @@ import { supabase } from "@/supabase/supabaseClient";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DASHBOARD_URL, SIGN_UP_URL } from "@/constants/urls";
 import Link from "next/link";
+import { NO_ACCOUNT, SIGN_UP } from "@/constants/texts";
 
 interface LogInFormProps {
   initialValues: LogInFormData;
@@ -92,12 +93,12 @@ export function LogInForm({ initialValues }: LogInFormProps) {
             title={isPending ? <Spinner size="md" /> : LOG_IN_BUTTON_LABEL}
           />
           <div className="mt-4 text-center text-sm text-gray-500">
-            Nie masz konta?{" "}
+            {NO_ACCOUNT}{" "}
             <Link
               href={SIGN_UP_URL}
               className="text-primary cursor-pointer hover:underline"
             >
-              Zarejestruj się
+              {SIGN_UP}
             </Link>
           </div>
         </div>

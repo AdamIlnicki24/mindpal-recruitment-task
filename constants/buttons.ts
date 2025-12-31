@@ -6,3 +6,5 @@ export const ADD_FAVORITE_BUTTON_LABEL = "Dodaj do ulubionych";
 export const REMOVE_FAVORITE_BUTTON_LABEL = "Usuń z ulubionych";
 export const LOG_OUT_BUTTON_LABEL = "Wyloguj";
 export const LOGGING_OUT_BUTTON_LABEL = "Wylogowywanie...";
+export const REDIRECT_TO_ALL_CHARACTERS_BUTTON_LABEL = "Przejdź do wszystkich postaci";
+export const REDIRECT_TO_FAVORITES_BUTTON_LABEL = "Przejdź do Twoich ulubionych postaci";

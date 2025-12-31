@@ -7,4 +7,8 @@ export const SIGN_UP_SUCCESS_TOAST = "Poprawnie zarejestrowano konto i zalogowan
 export const SIGN_UP_ERROR_TOAST =
   "Podczas rejestracji do serwisu wystąpił błąd.";
 export const EXISTING_USER_ERROR_TOAST =
-  "Użytkownik o podanym adresie e-mail już istnieje."; 
+  "Użytkownik o podanym adresie e-mail już istnieje.";
+export const REMOVE_FAVORITE_TOAST = "Usunięto z ulubionych";
+export const REMOVE_FAVORITE_ERROR_TOAST = "Błąd podczas usuwania";
+export const ADD_FAVORITE_TOAST = "Dodano do ulubionych";
+export const ADD_FAVORITE_ERROR_TOAST = "Błąd podczas dodawania";

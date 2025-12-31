@@ -17,6 +17,7 @@ import { Formik } from "formik";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { SignUpFormData, signUpFormSchema } from "./signUpFormSchema";
+import { ALREADY_HAVE_ACCOUNT, LOG_IN } from "@/constants/texts";
 
 interface SignUpFormProps {
   initialValues: SignUpFormData;
@@ -96,12 +97,12 @@ export function SignUpForm({ initialValues }: SignUpFormProps) {
           />
 
           <div className="mt-4 text-center text-sm text-gray-500">
-            Masz już konto?{" "}
+            {ALREADY_HAVE_ACCOUNT}{" "}
             <Link
               href={LOG_IN_URL}
               className="text-primary cursor-pointer hover:underline"
             >
-              Zaloguj się
+              {LOG_IN}
             </Link>
           </div>
         </div>
