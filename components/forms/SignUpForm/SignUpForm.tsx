@@ -1,51 +1,52 @@
 "use client";
 
 import { SubmitButton } from "@/components/buttons/SubmitButton/SubmitButton";
-import { LOG_IN_BUTTON_LABEL } from "@/constants/buttons";
-import {
-  LOG_IN_ERROR_TOAST,
-  LOG_IN_INVALID_CREDENTIALS_TOAST,
-  LOG_IN_SUCCESS_TOAST,
-} from "@/constants/toasts";
-import { addToast, Spinner } from "@heroui/react";
-import { Formik } from "formik";
-import { useState } from "react";
-import { LogInFormData, logInFormSchema } from "./logInFormSchema";
 import { EmailInput } from "@/components/inputs/EmailInput/EmailInput";
 import { PasswordInput } from "@/components/inputs/PasswordInput/PasswordInput";
-import { supabase } from "@/supabase/supabaseClient";
-import { useRouter, useSearchParams } from "next/navigation";
-import { DASHBOARD_URL, SIGN_UP_URL } from "@/constants/urls";
+import { SIGN_UP_BUTTON_LABEL } from "@/constants/buttons";
+import {
+  EXISTING_USER_ERROR_TOAST,
+  SIGN_UP_ERROR_TOAST,
+  SIGN_UP_SUCCESS_TOAST,
+} from "@/constants/toasts";
+import { DASHBOARD_URL, LOG_IN_URL } from "@/constants/urls";
 import Link from "next/link";
+import { supabase } from "@/supabase/supabaseClient";
+import { addToast, Spinner } from "@heroui/react";
+import { Formik } from "formik";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { SignUpFormData, signUpFormSchema } from "./signUpFormSchema";
 
-interface LogInFormProps {
-  initialValues: LogInFormData;
+interface SignUpFormProps {
+  initialValues: SignUpFormData;
 }
 
-export function LogInForm({ initialValues }: LogInFormProps) {
+export function SignUpForm({ initialValues }: SignUpFormProps) {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const onSubmitHandler = async (values: LogInFormData) => {
+  const onSubmitHandler = async (values: SignUpFormData) => {
     setIsPending(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
       });
 
       if (error) {
-        const isInvalidCredentials =
-          error.status === 400 ||
-          /invalid|credentials|password|email/i.test(error.message || "");
+        const doesEmailExist =
+          /already|exists|duplicate|user already exists|already registered/i.test(
+            error.message || ""
+          ) || error.status === 409;
 
         addToast({
           color: "danger",
-          title: isInvalidCredentials
-            ? LOG_IN_INVALID_CREDENTIALS_TOAST
-            : LOG_IN_ERROR_TOAST,
+          title: doesEmailExist
+            ? EXISTING_USER_ERROR_TOAST
+            : SIGN_UP_ERROR_TOAST,
         });
 
         setIsPending(false);
@@ -54,22 +55,23 @@ export function LogInForm({ initialValues }: LogInFormProps) {
 
       addToast({
         color: "success",
-        title: LOG_IN_SUCCESS_TOAST,
+        title: SIGN_UP_SUCCESS_TOAST,
       });
 
       const redirectParam = searchParams?.get("redirect") ?? "";
       const redirectPath = redirectParam
         ? decodeURIComponent(redirectParam)
         : DASHBOARD_URL;
+
       router.replace(redirectPath);
+
       setIsPending(false);
-    } catch (error) {
-      console.error("Login error:", error);
+    } catch (err) {
+      console.error("Sign up error:", err);
       addToast({
         color: "danger",
-        title: LOG_IN_ERROR_TOAST,
+        title: SIGN_UP_ERROR_TOAST,
       });
-
       setIsPending(false);
     }
   };
@@ -78,7 +80,7 @@ export function LogInForm({ initialValues }: LogInFormProps) {
     <Formik
       initialValues={initialValues}
       onSubmit={onSubmitHandler}
-      validationSchema={logInFormSchema}
+      validationSchema={signUpFormSchema}
     >
       {() => (
         <div className="flex w-full flex-col gap-4">
@@ -86,17 +88,19 @@ export function LogInForm({ initialValues }: LogInFormProps) {
             <EmailInput />
             <PasswordInput />
           </div>
+
           <SubmitButton
-            title={isPending ? <Spinner size="md" /> : LOG_IN_BUTTON_LABEL}
+            title={isPending ? <Spinner size="md" /> : SIGN_UP_BUTTON_LABEL}
             mode="secondary"
           />
+
           <div className="mt-4 text-center text-sm text-gray-500">
-            Nie masz konta?{" "}
+            Masz już konto?{" "}
             <Link
-              href={SIGN_UP_URL}
+              href={LOG_IN_URL}
               className="text-primary cursor-pointer hover:underline"
             >
-              Zarejestruj się
+              Zaloguj się
             </Link>
           </div>
         </div>
