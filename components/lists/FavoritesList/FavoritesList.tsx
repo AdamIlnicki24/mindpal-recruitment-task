@@ -125,6 +125,8 @@ export function FavoritesList() {
           currentPage={page}
           totalPages={totalPages}
           onChange={(p) => setPage(p)}
+          siblings={2}
+          boundaries={2}
         />
       </div>
     </div>
