@@ -1,33 +1,41 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { Pagination } from "@/components/Pagination/Pagination";
+import { FAVORITES_URL, LOG_IN_URL } from "@/constants/urls";
 import { useCharacters } from "@/hooks/api/characters/useCharacters";
 import { useFavorites } from "@/hooks/api/favorites/useFavorites";
-import { Pagination } from "@/components/Pagination/Pagination";
-import { addToast, Spinner } from "@heroui/react";
-import { LOG_IN_URL } from "@/constants/urls";
 import { useAuth } from "@/hooks/auth/useAuth";
-import { Button } from "../buttons/Button/Button";
+import { addToast, Spinner } from "@heroui/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { AddButton } from "../../buttons/AddButton/AddButton";
+import { LogoutButton } from "../../buttons/LogoutButton/LogoutButton";
+import { RemoveButton } from "../../buttons/RemoveButton/RemoveButton";
+import { RedirectButton } from "@/components/buttons/RedirectButton/RedirectButton";
+import { useRouter } from "next/navigation";
 
 export function CharactersList() {
   const [page, setPage] = useState<number>(1);
 
+  const router = useRouter();
+
   const { data, isLoading, isError } = useCharacters(page);
 
   const {
-    favorites,
+    favoriteIds,
     addFavorite,
     removeFavorite,
-    addingFavorite,
-    removingFavorite,
+    isAdding,
+    isRemoving,
+    isLoading: isFavoritesLoading,
   } = useFavorites(1, 1000);
 
   const { isLoggedIn } = useAuth();
 
   const totalPages = data?.totalPages ?? 1;
 
-  const favSet = new Set(favorites);
+  const favSet = new Set(favoriteIds);
 
   const onAdd = async (id: number, name: string, image?: string | null) => {
     if (!isLoggedIn) {
@@ -56,9 +64,22 @@ export function CharactersList() {
   };
 
   return (
-    <div>
-      <div className="mb-4">
-        <h2 className="text-xl font-medium">Lista postaci</h2>
+    <div className="min-h-svh">
+      <div className="mb-4 grid grid-cols-1 items-center gap-4 pe-8 pb-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex justify-start">
+          <RedirectButton
+            title="Przejdź do Twoich ulubionych postaci"
+            onPress={() => router.push(FAVORITES_URL)}
+          />
+        </div>
+        <div className="order-first flex justify-center sm:order-none sm:col-span-2 lg:col-span-1">
+          <h1 className="text-center text-[1.7rem] font-bold uppercase">
+            Lista wszystkich postaci z Rick i Morty
+          </h1>
+        </div>
+        <div className="flex justify-end sm:col-start-2 sm:justify-self-end lg:col-auto">
+          <LogoutButton />
+        </div>
       </div>
 
       {isLoading && (
@@ -69,7 +90,7 @@ export function CharactersList() {
 
       {isError && <div className="text-red-600">Błąd podczas pobierania</div>}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {data?.results?.map((c) => (
           <div
             key={c.id}
@@ -96,36 +117,22 @@ export function CharactersList() {
               <p className="text-sm">
                 {c.species} {c.status ? `• ${c.status}` : ""}
               </p>
+            </div>
 
-              <div className="mt-3 flex gap-2">
-                {favSet.has(c.id) ? (
-                  <Button
-                    title={
-                      removingFavorite ? (
-                        <Spinner size="sm" />
-                      ) : (
-                        "Usuń z ulubionych"
-                      )
-                    }
-                    mode="primary"
-                    onClick={() => onRemove(c.id)}
-                    disabled={removingFavorite}
-                  />
-                ) : (
-                  <Button
-                    title={
-                      addingFavorite ? (
-                        <Spinner size="sm" />
-                      ) : (
-                        "Dodaj do ulubionych"
-                      )
-                    }
-                    mode="secondary"
-                    onClick={() => onAdd(c.id, c.name, c.image ?? null)}
-                    disabled={addingFavorite}
-                  />
-                )}
-              </div>
+            <div className="flex gap-2">
+              {favSet.has(Number(c.id)) ? (
+                <RemoveButton
+                  removingFavorite={isRemoving(Number(c.id))}
+                  onPress={() => onRemove(Number(c.id))}
+                  disabled={isRemoving(Number(c.id)) || isFavoritesLoading}
+                />
+              ) : (
+                <AddButton
+                  addingFavorite={isAdding(Number(c.id))}
+                  onPress={() => onAdd(Number(c.id), c.name, c.image ?? null)}
+                  disabled={isAdding(Number(c.id)) || isFavoritesLoading}
+                />
+              )}
             </div>
           </div>
         ))}

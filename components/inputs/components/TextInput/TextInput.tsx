@@ -41,6 +41,7 @@ export function TextInput({
         size="lg"
         onChange={handleInputChange}
         labelPlacement="inside"
+        variant="faded"
         {...properties}
       />
       {isCounterShown && maxLength && (
