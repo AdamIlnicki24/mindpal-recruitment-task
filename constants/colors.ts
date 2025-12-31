@@ -1,6 +1,7 @@
 export const colors = {
-  white: "#FFF",
+  white: "#fff",
   black: "#000",
-  primaryColor: "#3B1A06",
-  defaultGray: "#676767",
+  defaultRed: "#861616ff",
+  primaryColor: "#1c4464ff",
+  defaultGray: "#898989",
 };
