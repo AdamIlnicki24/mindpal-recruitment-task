@@ -26,6 +26,11 @@ export function Pagination({
       size={size}
       showControls={showControls}
       isCompact={isCompact}
+      classNames={{
+        item: "cursor-pointer",
+        prev: "cursor-pointer",
+        next: "cursor-pointer",
+      }}
       onChange={(p: number) => {
         onChange(p);
       }}
