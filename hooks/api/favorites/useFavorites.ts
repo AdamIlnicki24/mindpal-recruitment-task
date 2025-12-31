@@ -3,13 +3,11 @@ import { supabase } from "@/supabase/supabaseClient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-const PAGE_SIZE = 10;
 type Favorite = {
   id: number;
   name: string;
   image: string | null;
 };
-const EMPTY_FAVORITES: Favorite[] = [];
 
 type AddFavoriteInput = {
   id: number;
@@ -17,11 +15,15 @@ type AddFavoriteInput = {
   image?: string | null;
 };
 
+const PAGE_SIZE = 10;
+
+const EMPTY_FAVORITES: Favorite[] = [];
+
 export function useFavorites(page = 1, pageSize = PAGE_SIZE) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  const userId = (user as any)?.id ?? null;
+  const userId = user?.id ?? null;
 
   const query = useQuery({
     queryKey: ["favorites", userId, page, pageSize],
@@ -40,7 +42,7 @@ export function useFavorites(page = 1, pageSize = PAGE_SIZE) {
 
       if (error) throw error;
 
-      const items: Favorite[] = (data ?? []).map((r: any) => ({
+      const items: Favorite[] = (data ?? []).map((r) => ({
         id: Number(r.character_id),
         name: r.character_name,
         image: r.character_image,
@@ -65,7 +67,6 @@ export function useFavorites(page = 1, pageSize = PAGE_SIZE) {
 
       if (error) {
         if (error.code === "23505") {
-          // unique violation -> already exists
           return payload.id;
         }
         throw error;

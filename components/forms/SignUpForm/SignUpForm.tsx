@@ -31,7 +31,7 @@ export function SignUpForm({ initialValues }: SignUpFormProps) {
     setIsPending(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
       });
@@ -67,7 +67,9 @@ export function SignUpForm({ initialValues }: SignUpFormProps) {
 
       setIsPending(false);
     } catch (err) {
-      console.error("Sign up error:", err);
+      if (process.env.NODE_ENV !== "production") {
+        console.error(err);
+      }
       addToast({
         color: "danger",
         title: SIGN_UP_ERROR_TOAST,
@@ -91,7 +93,6 @@ export function SignUpForm({ initialValues }: SignUpFormProps) {
 
           <SubmitButton
             title={isPending ? <Spinner size="md" /> : SIGN_UP_BUTTON_LABEL}
-            mode="secondary"
           />
 
           <div className="mt-4 text-center text-sm text-gray-500">

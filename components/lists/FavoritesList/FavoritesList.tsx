@@ -8,7 +8,7 @@ import { addToast, Spinner } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { LogoutButton } from "../../buttons/LogoutButton/LogoutButton";
+import { LogOutButton } from "../../buttons/LogOutButton/LogOutButton";
 import { RemoveButton } from "../../buttons/RemoveButton/RemoveButton";
 
 export function FavoritesList() {
@@ -31,28 +31,30 @@ export function FavoritesList() {
     try {
       await removeFavorite(id);
       addToast({ color: "success", title: "Usunięto z ulubionych" });
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(err);
+      }
       addToast({ color: "danger", title: "Błąd podczas usuwania" });
     }
   };
 
   return (
     <div className="min-h-svh">
-      <div className="mb-4 grid grid-cols-1 items-center gap-4 pe-8 pb-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="flex justify-start">
+      <div className="mb-4 grid grid-cols-1 items-center gap-4 pe-8 pb-4 lg:grid-cols-3">
+        <div className="flex justify-center lg:justify-start">
           <RedirectButton
             title="Przejdź do wszystkich postaci"
             onPress={() => router.push(DASHBOARD_URL)}
           />
         </div>
-        <div className="order-first flex justify-center sm:order-none sm:col-span-2 lg:col-span-1">
+        <div className="order-first flex justify-center lg:order-none lg:col-span-1">
           <h1 className="text-center text-[1.7rem] font-bold uppercase">
             Twoje ulubione postaci
           </h1>
         </div>
-        <div className="flex justify-end sm:col-start-2 sm:justify-self-end lg:col-auto">
-          <LogoutButton />
+        <div className="flex justify-center lg:justify-end">
+          <LogOutButton />
         </div>
       </div>
 
@@ -70,7 +72,7 @@ export function FavoritesList() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 xl:grid-cols-3">
         {favorites.map((c) => (
           <div
             key={c.id}
@@ -86,7 +88,7 @@ export function FavoritesList() {
                   className="rounded object-cover"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded bg-gray-100 text-sm">
+                <div className="flex h-20 w-20 items-center justify-center rounded bg-gray-100 text-lg">
                   Brak zdjęcia
                 </div>
               )}

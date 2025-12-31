@@ -39,7 +39,10 @@ export function useAuth() {
         });
 
         await queryClient.invalidateQueries({ queryKey: ["getMe"] });
-      } catch (err) {
+      } catch (error) {
+        if (process.env.NODE_ENV !== "production") {
+          console.error(error);
+        }
         if (!mounted) return;
         setAuthState({ isLoggedIn: false, isPending: false, user: null });
         await queryClient.invalidateQueries({ queryKey: ["getMe"] });
@@ -60,7 +63,14 @@ export function useAuth() {
 
       try {
         await queryClient.invalidateQueries({ queryKey: ["getMe"] });
-      } catch (e) {}
+      } catch (err) {
+        if (process.env.NODE_ENV !== "production") {
+          console.error(err);
+        }
+        if (!mounted) return;
+        setAuthState({ isLoggedIn: false, isPending: false, user: null });
+        await queryClient.invalidateQueries({ queryKey: ["getMe"] });
+      }
     });
 
     return () => {
