@@ -11,8 +11,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AddButton } from "../../buttons/AddButton/AddButton";
-import { LogoutButton } from "../../buttons/LogoutButton/LogoutButton";
 import { RemoveButton } from "../../buttons/RemoveButton/RemoveButton";
+import { LogOutButton } from "@/components/buttons/LogOutButton/LogOutButton";
 
 export function CharactersList() {
   const [page, setPage] = useState<number>(1);
@@ -38,9 +38,9 @@ export function CharactersList() {
 
   const onAdd = async (id: number, name: string, image?: string | null) => {
     if (!isLoggedIn) {
-      router.push(`${LOG_IN_URL}?redirect=${encodeURIComponent(
-        window.location.pathname
-      )}`);
+      router.push(
+        `${LOG_IN_URL}?redirect=${encodeURIComponent(window.location.pathname)}`
+      );
       return;
     }
     try {
@@ -81,7 +81,7 @@ export function CharactersList() {
           </h1>
         </div>
         <div className="flex justify-center lg:justify-end">
-          <LogoutButton />
+          <LogOutButton />
         </div>
       </div>
 

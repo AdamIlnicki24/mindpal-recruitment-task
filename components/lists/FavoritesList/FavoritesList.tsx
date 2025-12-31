@@ -8,7 +8,7 @@ import { addToast, Spinner } from "@heroui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { LogoutButton } from "../../buttons/LogoutButton/LogoutButton";
+import { LogOutButton } from "../../buttons/LogOutButton/LogOutButton";
 import { RemoveButton } from "../../buttons/RemoveButton/RemoveButton";
 
 export function FavoritesList() {
@@ -54,7 +54,7 @@ export function FavoritesList() {
           </h1>
         </div>
         <div className="flex justify-center lg:justify-end">
-          <LogoutButton />
+          <LogOutButton />
         </div>
       </div>
 

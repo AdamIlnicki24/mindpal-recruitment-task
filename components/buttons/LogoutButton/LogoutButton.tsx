@@ -12,11 +12,11 @@ import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function LogoutButton() {
+export function LogOutButton() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogout = async () => {
+  const handleLogOut = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -31,7 +31,7 @@ export function LogoutButton() {
   return (
     <Button
       title={loading ? LOGGING_OUT_BUTTON_LABEL : LOG_OUT_BUTTON_LABEL}
-      onClick={handleLogout}
+      onClick={handleLogOut}
       disabled={loading}
       size="sm"
       className="bg-defaultGray"
